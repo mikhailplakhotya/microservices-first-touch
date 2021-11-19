@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: batbat-ui-depl
+spec:
+  selector:
+    matchLabels:
+      app: batbat-ui
+  template:
+    metadata:
+      labels:
+        app: batbat-ui
+    spec:
+      containers:
+        - name: nuxt-client
+          image: registry.gitlab.com/batbat-cafe/batbat-ui
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: batbat-ui-srv
+spec:
+  selector:
+    app: batbat-ui
+  ports:
+    - name: batbat-ui
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

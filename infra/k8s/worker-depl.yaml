@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-depl
+spec:
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+        - name: worker
+          image: registry.gitlab.com/batbat-cafe/worker
+          env:
+            - name: NATS_URI
+              value: "http://nats-srv:4222"
+            - name: NATS_CLUSTER_ID
+              value: "batbat"
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: REDIS_HOST
+              value: expiration-redis-srv

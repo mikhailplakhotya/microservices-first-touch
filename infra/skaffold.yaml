@@ -1,0 +1,52 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: registry.gitlab.com/batbat-cafe/auth
+      context: ../auth
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+    - image: registry.gitlab.com/batbat-cafe/batbat-ui
+      context: ../batbat-ui
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.vue"
+            dest: .
+          - src: "**/*.ts"
+            dest: .
+    - image: registry.gitlab.com/batbat-cafe/products
+      context: ../products
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+    - image: registry.gitlab.com/batbat-cafe/orders
+      context: ../orders
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
+    - image: registry.gitlab.com/batbat-cafe/worker
+      context: ../worker
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .
